@@ -1,6 +1,7 @@
 # Fitness Tracker Application
 
 A comprehensive fitness tracking application built with Flask that helps users monitor their health and wellness journey.
+It was originaly developed for my gf Yana, who just started her fitness journey and is ran localy as a webap with hopes to expand it to mobile (as she does not have a computer).
 
 ## Features
 
