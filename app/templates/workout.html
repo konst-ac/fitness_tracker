@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Workout Tracking - Fitness Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Workout Tracking</h1>
+
+    <!-- Workout Log Form -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Log Workout</h5>
+                    <form action="/workout/log" method="POST">
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="workout_type" class="form-label">Workout Type</label>
+                            <select class="form-select" id="workout_type" name="workout_type" required>
+                                <option value="strength">Strength Training</option>
+                                <option value="cardio">Cardio</option>
+                                <option value="hiit">HIIT</option>
+                                <option value="yoga">Yoga</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exercise_name" class="form-label">Exercise Name</label>
+                            <input type="text" class="form-control" id="exercise_name" name="exercise_name" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="sets" class="form-label">Sets</label>
+                                <input type="number" class="form-control" id="sets" name="sets">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="reps" class="form-label">Reps</label>
+                                <input type="number" class="form-control" id="reps" name="reps">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="weight" class="form-label">Weight (kg)</label>
+                                <input type="number" class="form-control" id="weight" name="weight">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="duration" class="form-label">Duration (minutes)</label>
+                                <input type="number" class="form-control" id="duration" name="duration" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="intensity" class="form-label">Intensity</label>
+                                <select class="form-select" id="intensity" name="intensity" required>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="2"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Log Workout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workout Summary -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Weekly Summary</h5>
+                    <div class="row text-center g-3">
+                        <div class="col-6">
+                            <div class="metric-value">4</div>
+                            <div class="metric-label">Workouts</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="metric-value">240</div>
+                            <div class="metric-label">Total Minutes</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="metric-value">2800</div>
+                            <div class="metric-label">Calories Burned</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="metric-value">80%</div>
+                            <div class="metric-label">Goal Progress</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workout Charts -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Workout Distribution</h5>
+                    <canvas id="workoutTypeChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Weekly Progress</h5>
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Workout Type Distribution Chart
+    const typeCtx = document.getElementById('workoutTypeChart').getContext('2d');
+    new Chart(typeCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Strength', 'Cardio', 'HIIT', 'Yoga'],
+            datasets: [{
+                data: [45, 30, 15, 10],
+                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Weekly Progress Chart
+    const progressCtx = document.getElementById('progressChart').getContext('2d');
+    new Chart(progressCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Duration (minutes)',
+                data: [60, 45, 0, 75, 0, 30, 30],
+                backgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 120
+                }
+            }
+        }
+    });
+</script>
+{% endblock %} 

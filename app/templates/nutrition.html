@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Nutrition Tracking - Fitness Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Nutrition Tracking</h1>
+
+    <!-- Nutrition Log Form -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Log Meal</h5>
+                    <form action="/nutrition/log" method="POST">
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="meal_type" class="form-label">Meal Type</label>
+                            <select class="form-select" id="meal_type" name="meal_type" required>
+                                <option value="breakfast">Breakfast</option>
+                                <option value="lunch">Lunch</option>
+                                <option value="dinner">Dinner</option>
+                                <option value="snack">Snack</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="food_name" class="form-label">Food Name</label>
+                            <input type="text" class="form-control" id="food_name" name="food_name" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="calories" class="form-label">Calories</label>
+                                <input type="number" class="form-control" id="calories" name="calories" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="serving_size" class="form-label">Serving Size</label>
+                                <input type="text" class="form-control" id="serving_size" name="serving_size" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="protein" class="form-label">Protein (g)</label>
+                                <input type="number" class="form-control" id="protein" name="protein" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="carbs" class="form-label">Carbs (g)</label>
+                                <input type="number" class="form-control" id="carbs" name="carbs" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="fat" class="form-label">Fat (g)</label>
+                                <input type="number" class="form-control" id="fat" name="fat" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="2"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Log Meal</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nutrition Summary -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Today's Summary</h5>
+                    <div class="row text-center g-3">
+                        <div class="col-6">
+                            <div class="metric-value">1850</div>
+                            <div class="metric-label">Calories</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="metric-value">75%</div>
+                            <div class="metric-label">Daily Goal</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="metric-value">65g</div>
+                            <div class="metric-label">Protein</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="metric-value">220g</div>
+                            <div class="metric-label">Carbs</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="metric-value">55g</div>
+                            <div class="metric-label">Fat</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nutrition Charts -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Calorie Intake</h5>
+                    <canvas id="calorieChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Macronutrient Distribution</h5>
+                    <canvas id="macroChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Calorie Intake Chart
+    const calorieCtx = document.getElementById('calorieChart').getContext('2d');
+    new Chart(calorieCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Calories',
+                data: [2100, 1950, 2200, 1800, 2300, 2000, 1850],
+                backgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 3000
+                }
+            }
+        }
+    });
+
+    // Macronutrient Distribution Chart
+    const macroCtx = document.getElementById('macroChart').getContext('2d');
+    new Chart(macroCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Protein', 'Carbs', 'Fat'],
+            datasets: [{
+                data: [65, 220, 55],
+                backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %} 

@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Sleep Tracking - Fitness Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Sleep Tracking</h1>
+
+    <!-- Sleep Log Form -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Log Sleep</h5>
+                    <form action="/sleep/log" method="POST">
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sleep_time" class="form-label">Sleep Time</label>
+                            <input type="time" class="form-control" id="sleep_time" name="sleep_time" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="wake_time" class="form-label">Wake Time</label>
+                            <input type="time" class="form-control" id="wake_time" name="wake_time" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quality" class="form-label">Sleep Quality (1-5)</label>
+                            <select class="form-select" id="quality" name="quality" required>
+                                <option value="1">1 - Poor</option>
+                                <option value="2">2 - Fair</option>
+                                <option value="3">3 - Good</option>
+                                <option value="4">4 - Very Good</option>
+                                <option value="5">5 - Excellent</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Log Sleep</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sleep Statistics -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Sleep Statistics</h5>
+                    <div class="row text-center g-3">
+                        <div class="col-6">
+                            <div class="metric-value">8.2</div>
+                            <div class="metric-label">Average Hours</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="metric-value">4.2</div>
+                            <div class="metric-label">Average Quality</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="metric-value">23:00</div>
+                            <div class="metric-label">Average Bedtime</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="metric-value">07:12</div>
+                            <div class="metric-label">Average Wake Time</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sleep Charts -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Sleep Duration</h5>
+                    <canvas id="sleepDurationChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Sleep Quality</h5>
+                    <canvas id="sleepQualityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Sleep Duration Chart
+    const durationCtx = document.getElementById('sleepDurationChart').getContext('2d');
+    new Chart(durationCtx, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Hours of Sleep',
+                data: [7.5, 6.8, 8.2, 7.0, 8.5, 9.0, 7.8],
+                borderColor: '#007bff',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 12
+                }
+            }
+        }
+    });
+
+    // Sleep Quality Chart
+    const qualityCtx = document.getElementById('sleepQualityChart').getContext('2d');
+    new Chart(qualityCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Sleep Quality',
+                data: [4, 3, 5, 3, 4, 5, 4],
+                backgroundColor: '#28a745'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 5,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %} 

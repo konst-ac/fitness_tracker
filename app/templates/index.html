@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Fitness Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Welcome to Your Fitness Dashboard</h1>
+    
+    <div class="row g-4">
+        <!-- Sleep Card -->
+        <div class="col-md-4">
+            <div class="card dashboard-card h-100" onclick="window.location.href='/sleep'">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Sleep Tracking</h5>
+                    <div class="metric-value">8.2</div>
+                    <div class="metric-label">Hours of Sleep (Avg)</div>
+                    <p class="card-text mt-3">Track your sleep patterns and quality</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nutrition Card -->
+        <div class="col-md-4">
+            <div class="card dashboard-card h-100" onclick="window.location.href='/nutrition'">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Nutrition</h5>
+                    <div class="metric-value">2100</div>
+                    <div class="metric-label">Daily Calories (Avg)</div>
+                    <p class="card-text mt-3">Monitor your nutrition and diet</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workout Card -->
+        <div class="col-md-4">
+            <div class="card dashboard-card h-100" onclick="window.location.href='/workout'">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Workouts</h5>
+                    <div class="metric-value">4</div>
+                    <div class="metric-label">Workouts This Week</div>
+                    <p class="card-text mt-3">Track your exercise progress</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Weekly Activity Overview</h5>
+                    <canvas id="weeklyActivityChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Progress Summary</h5>
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Weekly Activity Chart
+    const weeklyActivityCtx = document.getElementById('weeklyActivityChart').getContext('2d');
+    new Chart(weeklyActivityCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Activity Minutes',
+                data: [45, 60, 30, 75, 45, 90, 60],
+                backgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Progress Chart
+    const progressCtx = document.getElementById('progressChart').getContext('2d');
+    new Chart(progressCtx, {
+        type: 'line',
+        data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+                label: 'Progress Score',
+                data: [65, 72, 78, 85],
+                borderColor: '#28a745',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+</script>
+{% endblock %} 
